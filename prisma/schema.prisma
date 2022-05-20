@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DB_URL")
+}
+
+model Client_Detail {
+  ClientKey            String   @id(map: "PK_Client_Detail") @db.VarChar(32)
+  Name                 String?  @db.VarChar(100)
+  OwnerClientRevenue   Decimal? @db.Decimal(38, 4)
+  BillingClientRevenue Decimal? @db.Decimal(38, 4)
+}
+
+model Employee {
+  Employee     String  @id(map: "PK_Employee") @db.VarChar(20)
+  EmployeeName String? @db.VarChar(111)
+  FirstName    String? @db.VarChar(60)
+  LastName     String? @db.VarChar(50)
+  Manager      String? @db.VarChar(20)
+  Department   String? @db.NChar(10)
+}
+
+model Project {
+  ProjectNumber             String    @id(map: "PK_Projects") @db.VarChar(30)
+  Family                    String?   @db.VarChar(9)
+  Name                      String?   @db.VarChar(40)
+  Stage                     String    @db.VarChar(11)
+  Sector                    String?   @db.VarChar(50)
+  SuperSector               String?   @db.VarChar(50)
+  ContractType              String?   @db.VarChar(255)
+  ConstructionValue         String    @db.VarChar(7)
+  OwnerClient               String?   @db.VarChar(32)
+  BillingClient             String?   @db.VarChar(32)
+  ProjectManager            String?   @db.VarChar(20)
+  DesignStart               DateTime? @db.DateTime
+  DesignEnd                 DateTime? @db.DateTime
+  ConstructionStart         DateTime? @db.DateTime
+  ConstructionEnd           DateTime? @db.DateTime
+  BillingClientRelationship String?   @db.VarChar(20)
+  OwnerClientRelationship   String?   @db.VarChar(20)
+  Latitude                  Decimal?  @db.Decimal(8, 6)
+  Longitude                 Decimal?  @db.Decimal(9, 6)
+  Address                   String?   @db.VarChar(120)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Project_Milestones {
+  Number         String?   @db.NVarChar(50)
+  Practice       String?   @db.NVarChar(50)
+  Milestone_Name String?   @db.NVarChar(Max)
+  Milestone_Date DateTime? @db.Date
+  Id             String    @id(map: "PK_Project_Milestones") @default("newid()", map: "DF__Project_Mile__Id__2A164134") @db.VarChar(40)
+}
+
+model Project_Team {
+  Number   String? @db.NChar(30)
+  Team     String? @db.VarChar(50)
+  Practice String? @db.VarChar(50)
+  Employee String? @db.NChar(10)
+  Id       String  @id(map: "PK_Project_Team") @default("newid()", map: "DF__Project_Team__Id__282DF8C2") @db.VarChar(40)
+}

@@ -112,9 +112,9 @@ const ProjectCard: React.FunctionComponent<IProjectCardProps> = ({
             pb={4}
             width={{ base: "100%", lg: "34%" }}
           >
-            <ClientInformation />
+            {/* <ClientInformation />
             <LocationInformation />
-            <WfTeam />
+            <WfTeam /> */}
           </Flex>
           <Flex
             flexDirection="column"
@@ -132,7 +132,7 @@ const ProjectCard: React.FunctionComponent<IProjectCardProps> = ({
             pb={4}
             width={{ base: "100%", lg: "24%" }}
           >
-            <ProjectNotes />
+            {/* <ProjectNotes /> */}
             <Risks />
             <Lessons />
           </Flex>
@@ -149,7 +149,7 @@ const ProjectCard: React.FunctionComponent<IProjectCardProps> = ({
             pb={4}
             width={{ base: "100%", lg: "100%" }}
           >
-            <QualityInformation />
+            {/* <QualityInformation /> */}
           </Flex>
         </Flex>
       </Collapse>

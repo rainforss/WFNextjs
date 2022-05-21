@@ -40,6 +40,7 @@ const projectsRoute = async (req: NextApiRequest, res: NextApiResponse) => {
         throw error;
     }
   } catch (error: any) {
+    console.log(error);
     if (error.name === "Not Supported") {
       return res.status(405).json({ error });
     }
@@ -49,6 +50,7 @@ const projectsRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     if (error.name === "Not Found") {
       return res.status(404).json({ error });
     }
+    return res.status(500).json({ error });
   }
 };
 

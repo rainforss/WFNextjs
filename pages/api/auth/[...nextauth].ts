@@ -45,7 +45,7 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
-  secret: "sdaf;ksadgsdfgsdgsdg",
+  secret: process.env.AUTH_SECRET!,
   pages: {
     signIn: "/login",
   },

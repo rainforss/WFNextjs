@@ -55,7 +55,6 @@ export type ModifiedNote = Modify<
 const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
   props
 ) => {
-  console.log(props.project);
   return (
     <>
       <Flex

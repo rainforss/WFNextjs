@@ -3,7 +3,13 @@ import { fetcher } from "../utils/fetcher";
 
 export const useProjects = (managerId?: string) => {
   const { data, error } = useSWR(
-    managerId ? `http://localhost:3000/api/user/${managerId}/projects` : null,
+    managerId
+      ? `${
+          process.env.NODE_ENV === "production"
+            ? "https://walter-fedy.vercel.app"
+            : "http://localhost:3000"
+        }/api/user/${managerId}/projects`
+      : null,
     fetcher
   );
 

@@ -8,7 +8,11 @@ export const useProjectNotes = (
 ) => {
   const { data, error, mutate } = useSWR(
     managerId && projectNumber
-      ? `http://localhost:3000/api/user/${managerId}/projects/${projectNumber}/notes`
+      ? `${
+          process.env.NODE_ENV === "production"
+            ? "https://walter-fedy.vercel.app"
+            : "http://localhost:3000"
+        }/api/user/${managerId}/projects/${projectNumber}/notes`
       : null,
     fetcher
   );

@@ -7,7 +7,6 @@ interface INoteProps {
 }
 
 const Note: React.FunctionComponent<INoteProps> = ({ note }) => {
-  console.log(note);
   return (
     <Box>
       <Flex justify="space-between" alignItems="flex-start">

@@ -31,9 +31,7 @@ const CustomTileWithoutChart: React.FunctionComponent<
       mt={4}
       p={4}
     >
-      <Box w="100%" bg="white" borderRadius="10px">
-        {props.children}
-      </Box>
+      <Box w="100%">{props.children}</Box>
     </Flex>
   );
 };

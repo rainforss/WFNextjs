@@ -53,7 +53,6 @@ export default NextAuth({
     //This one gets called every time useSession or getSession is called
     jwt: async ({ token, account, user }) => {
       try {
-        console.log(token);
         if (account && user) {
           return {
             accessToken: account.access_token,
@@ -66,7 +65,6 @@ export default NextAuth({
 
         // Return previous token if the access token has not expired yet
         if (Date.now() < (token.accessTokenExpires as number)) {
-          console.log("not expired");
           return token;
         }
 

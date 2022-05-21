@@ -2,25 +2,8 @@ import { Project } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { prisma } from "../../../../../middleware/db";
-
-type Modify<T, R> = Omit<T, keyof R> & R;
-
-type ModifiedProject = Modify<
-  Project,
-  {
-    OwnerClient: {
-      Name: string;
-      OwnerClientRevenue?: Decimal;
-      BillingClientRevenue?: Decimal;
-    };
-    BillingClient: {
-      Name: string;
-      OwnerClientRevenue?: Decimal;
-      BillingClientRevenue?: Decimal;
-    };
-  }
-> | null;
+import { promisify } from "util";
+import { prisma } from "../../../../../../middleware/db";
 
 const projectRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -33,7 +16,7 @@ const projectRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id, projectNumber } = req.query;
     switch (req.method) {
       case "GET":
-        const project = await prisma.project.findFirst({
+        const project: any = await prisma.project.findFirst({
           where: {
             ProjectManager: id as string,
             ProjectNumber: projectNumber as string,
@@ -53,7 +36,44 @@ const projectRoute = async (req: NextApiRequest, res: NextApiResponse) => {
         });
 
         if (ownerClient) {
+          project.OwnerClient = { ...ownerClient };
         }
+
+        const billingClient = await prisma.client_Detail.findFirst({
+          where: { ClientKey: project.BillingClient! },
+        });
+
+        if (billingClient) {
+          project.BillingClient = { ...billingClient };
+        }
+
+        const projectTeams: any[] = await prisma.project_Team.findMany({
+          where: { Number: projectNumber as string },
+        });
+
+        const projectLeadsPromises: any[] = [];
+
+        projectTeams.forEach((p) => {
+          if (!p.Employee) {
+            return projectLeadsPromises.push(promisify(() => null));
+          }
+          projectLeadsPromises.push(
+            prisma.employee.findFirst({ where: { Employee: p.Employee } })
+          );
+        });
+
+        const projectLeads = await Promise.all(projectLeadsPromises);
+        projectTeams.forEach((p, index) => {
+          p.Employee = projectLeads[index];
+        });
+
+        project.ProjectTeams = projectTeams;
+
+        const mileStones = await prisma.project_Milestones.findMany({
+          where: { Number: project.ProjectNumber },
+        });
+
+        project.MileStones = mileStones;
 
         return res.status(200).json(project);
       case "POST":

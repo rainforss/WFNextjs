@@ -8,7 +8,7 @@ import { Indicator } from "../../utils/types";
 
 interface IStatusIndicatorProps extends ChakraProps {
   indicators: Indicator[];
-  status?: "red" | "orange" | "green";
+  status?: string | null;
 }
 
 const StatusIndicator: React.FunctionComponent<IStatusIndicatorProps> = ({
@@ -28,7 +28,7 @@ const StatusIndicator: React.FunctionComponent<IStatusIndicatorProps> = ({
             <Icon
               as={FaDotCircle}
               mx={2}
-              color={i.color === status ? i.color : "grey"}
+              color={i.status === status ? i.color : "grey"}
             />
           </span>
         </Tooltip>

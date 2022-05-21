@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { Project } from "@prisma/client";
+import { Project, Project_Milestones, Project_Note } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime";
 import * as React from "react";
 import Budget from "./financial-components/Budget";
 import Cash from "./financial-components/Cash";
@@ -14,8 +15,42 @@ import QualityInformation from "./project-components/QualityInformation";
 import WfTeam from "./project-components/WfTeam";
 
 interface IProjectSectionProps {
-  project: Project;
+  project: ModifiedProject;
 }
+
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+export type ModifiedProject = Modify<
+  Project,
+  {
+    OwnerClient: {
+      Name: string;
+      OwnerClientRevenue?: Decimal;
+      BillingClientRevenue?: Decimal;
+    };
+    BillingClient: {
+      Name: string;
+      OwnerClientRevenue?: Decimal;
+      BillingClientRevenue?: Decimal;
+    };
+    ProjectTeams: Array<{
+      Id: string;
+      Team: string;
+      Practice: string;
+      Employee: { EmployeeName: string; Department: string };
+    }>;
+    MileStones: Project_Milestones[];
+  }
+>;
+
+export type ModifiedNote = Modify<
+  Project_Note,
+  {
+    Created_By: {
+      EmployeeName: string;
+    };
+  }
+>;
 
 const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
   props
@@ -31,7 +66,17 @@ const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
         width="100%"
       >
         <Flex flexDirection="column" pb={4} width={{ base: "100%", lg: "34%" }}>
-          <ClientInformation />
+          <ClientInformation
+            projectNumber={props.project.ProjectNumber}
+            billingClient={props.project.BillingClient.Name}
+            ownerClient={props.project.OwnerClient.Name}
+            billingClientRelationship={props.project.BillingClientRelationship}
+            ownerClientRelationship={props.project.OwnerClientRelationship}
+            billingClientRevenue={
+              props.project.BillingClient.BillingClientRevenue
+            }
+            ownerClientRevenue={props.project.OwnerClient.OwnerClientRevenue}
+          />
           <LocationInformation
             libraries={["places"]}
             lat={props.project.Latitude}
@@ -39,7 +84,7 @@ const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
             address={props.project.Address}
             projectNumber={props.project.ProjectNumber}
           />
-          <WfTeam />
+          <WfTeam projectTeams={props.project.ProjectTeams} />
         </Flex>
         <Flex
           flexDirection="column"
@@ -53,7 +98,10 @@ const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
           <ProjectPerformance />
         </Flex>
         <Flex flexDirection="column" pb={4} width={{ base: "100%", lg: "24%" }}>
-          <ProjectNotes />
+          <ProjectNotes
+            projectNumber={props.project.ProjectNumber}
+            managerId={props.project.ProjectManager}
+          />
           <Risks />
           <Lessons />
         </Flex>
@@ -70,7 +118,7 @@ const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
           pb={4}
           width={{ base: "100%", lg: "100%" }}
         >
-          <QualityInformation />
+          <QualityInformation mileStones={props.project.MileStones} />
         </Flex>
       </Flex>
     </>

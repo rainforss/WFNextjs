@@ -8,6 +8,7 @@ import {
   PieData,
   ProjectNote,
   Risk,
+  SelectOption,
 } from "./types";
 import { MdHome } from "react-icons/md";
 import { BsCardList } from "react-icons/bs";
@@ -27,7 +28,7 @@ export const walterFedyDarkBlue = "#21242a";
 
 export const threeIndicators: Indicator[] = [
   {
-    status: "Bad",
+    status: "Negative",
     color: "red",
     description: "Very dangerous",
   },
@@ -37,7 +38,7 @@ export const threeIndicators: Indicator[] = [
     description: "Nothing serious",
   },
   {
-    status: "Good",
+    status: "Positive",
     color: "green",
     description: "Very good",
   },
@@ -308,4 +309,10 @@ export const projectPerformanceData: PieData[] = [
     value: 138000,
     color: "hsl(4, 70%, 50%)",
   },
+];
+
+export const relationshipOptions: SelectOption[] = [
+  { label: "Positive", value: "Positive" },
+  { label: "Neutral", value: "Neutral" },
+  { label: "Negative", value: "Negative" },
 ];

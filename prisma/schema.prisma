@@ -60,5 +60,14 @@ model Project_Team {
   Team     String? @db.VarChar(50)
   Practice String? @db.VarChar(50)
   Employee String? @db.NChar(10)
-  Id       String  @id(map: "PK_Project_Team") @default("newid()", map: "DF__Project_Team__Id__282DF8C2") @db.VarChar(40)
+  Id       String  @id(map: "PK_Project_Team") @default(dbgenerated("newid()"), map: "DF_Project_Team_Id") @db.UniqueIdentifier
+}
+
+model Project_Note {
+  Created_At     DateTime @db.Date
+  Title          String   @db.VarChar(100)
+  Description    String?  @db.VarChar(Max)
+  Created_By     String   @db.VarChar(20)
+  Project_Number String?  @db.VarChar(30)
+  Id             String   @id(map: "PK_Project_Note") @default(dbgenerated("newid()"), map: "DF_Project_Note_Id") @db.UniqueIdentifier
 }

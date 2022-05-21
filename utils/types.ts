@@ -63,3 +63,8 @@ export type Issue = {
   insurance: string;
   probabilityOfClaim: "Low" | "Medium" | "High";
 };
+
+export type SelectOption = {
+  label: string;
+  value: string;
+};

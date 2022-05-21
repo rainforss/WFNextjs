@@ -46,7 +46,7 @@ const Projects: NextPage<IProjectsProps> = () => {
           ) : null}
           {status === "authenticated" && projects
             ? projects.map((p: any) => (
-                <ProjectListItem key={p.projectNumber} project={p} />
+                <ProjectListItem key={p.ProjectNumber} project={p} />
               ))
             : null}
         </Box>

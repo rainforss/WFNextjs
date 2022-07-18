@@ -42,10 +42,7 @@ const Login: NextPage = () => {
           <Button
             onClick={() => {
               signIn("azure-ad", {
-                callbackUrl:
-                  process.env.NODE_ENV === "development"
-                    ? "/"
-                    : "https://projectscorecard.azurewebsites.net/api/auth/callback/azure-ad",
+                callbackUrl: "/",
               });
             }}
           >

@@ -2,14 +2,9 @@ import useSWR from "swr";
 import { fetcher } from "../utils/fetcher";
 
 export const useProjects = (managerId?: string) => {
+  console.log(process.env.DEV_URL);
   const { data, error } = useSWR(
-    managerId
-      ? `${
-          process.env.NODE_ENV === "production"
-            ? `${process.env.SITE_URL}`
-            : "http://localhost:3000"
-        }/api/user/${managerId}/projects`
-      : null,
+    managerId ? `/api/user/${managerId}/projects` : null,
     fetcher
   );
 

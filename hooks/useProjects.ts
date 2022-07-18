@@ -6,7 +6,7 @@ export const useProjects = (managerId?: string) => {
     managerId
       ? `${
           process.env.NODE_ENV === "production"
-            ? "https://walter-fedy.vercel.app"
+            ? "https://projectscorecard.azurewebsites.net"
             : "http://localhost:3000"
         }/api/user/${managerId}/projects`
       : null,

@@ -10,7 +10,7 @@ export const useProjectNotes = (
     managerId && projectNumber
       ? `${
           process.env.NODE_ENV === "production"
-            ? "https://walter-fedy.vercel.app"
+            ? "https://projectscorecard.azurewebsites.net"
             : "http://localhost:3000"
         }/api/user/${managerId}/projects/${projectNumber}/notes`
       : null,

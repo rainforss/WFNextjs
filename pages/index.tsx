@@ -14,8 +14,6 @@ const Home: NextPage<IHomeProps> = () => {
 
   const { groups } = useGroups(session?.accessToken);
 
-  console.log(groups);
-
   const { profile } = useProfile(session?.accessToken);
 
   return (

@@ -10,7 +10,7 @@ export const useProjectNotes = (
     managerId && projectNumber
       ? `${
           process.env.NODE_ENV === "production"
-            ? `${process.env.NEXTAUTH_URL}`
+            ? `${process.env.SITE_URL}`
             : "http://localhost:3000"
         }/api/user/${managerId}/projects/${projectNumber}/notes`
       : null,

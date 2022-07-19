@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { Project, Project_Milestones, Project_Note } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
 import * as React from "react";
+import { KeyedMutator } from "swr";
 import Budget from "./financial-components/Budget";
 import Cash from "./financial-components/Cash";
 import ProjectPerformance from "./financial-components/ProjectPerformance";
@@ -16,6 +17,7 @@ import WfTeam from "./project-components/WfTeam";
 
 interface IProjectSectionProps {
   project: ModifiedProject;
+  mutateProject: KeyedMutator<any>;
 }
 
 type Modify<T, R> = Omit<T, keyof R> & R;
@@ -75,6 +77,7 @@ const ProjectSection: React.FunctionComponent<IProjectSectionProps> = (
               props.project.BillingClient.BillingClientRevenue
             }
             ownerClientRevenue={props.project.OwnerClient.OwnerClientRevenue}
+            mutateProject={props.mutateProject}
           />
           <LocationInformation
             libraries={["places"]}

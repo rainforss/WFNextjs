@@ -16,6 +16,7 @@ import { Decimal } from "@prisma/client/runtime";
 import axios from "axios";
 import * as React from "react";
 import { FaSave } from "react-icons/fa";
+import { KeyedMutator } from "swr";
 import {
   relationshipOptions,
   threeIndicators,
@@ -34,6 +35,7 @@ interface IClientInformationProps {
   billingClientRevenue?: Decimal;
   ownerClientRelationship: string | null;
   ownerClientRevenue?: Decimal;
+  mutateProject: KeyedMutator<any>;
 }
 
 const ClientInformation: React.FunctionComponent<IClientInformationProps> = ({
@@ -44,6 +46,7 @@ const ClientInformation: React.FunctionComponent<IClientInformationProps> = ({
   ownerClient,
   ownerClientRelationship,
   ownerClientRevenue,
+  mutateProject,
 }) => {
   const [editing, setEditing] = React.useState(false);
   const [relationshipStatuses, setRelationshipStatuses] = React.useState({
@@ -51,7 +54,6 @@ const ClientInformation: React.FunctionComponent<IClientInformationProps> = ({
     billingClientRelationship,
   });
 
-  console.log(relationshipStatuses);
   return (
     <CustomTileWithoutChart title="Client Information">
       <Flex
@@ -88,12 +90,14 @@ const ClientInformation: React.FunctionComponent<IClientInformationProps> = ({
               icon={<Icon as={FaSave} />}
               onClick={async () => {
                 setEditing(false);
+
                 await axios.post(`/api/user/26073/projects/${projectNumber}`, {
                   OwnerClientRelationship:
                     relationshipStatuses.ownerClientRelationship,
                   BillingClientRelationship:
                     relationshipStatuses.billingClientRelationship,
                 });
+                await mutateProject();
               }}
             />
           )}

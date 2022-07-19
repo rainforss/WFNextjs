@@ -36,7 +36,7 @@ export default NextAuth({
       clientId: process.env.CLIENT_ID!,
       clientSecret: process.env.CLIENT_SECRET!,
       tenantId: process.env.TENANT_ID!,
-
+      idToken: true,
       authorization: {
         params: {
           scope: "offline_access profile openid",
@@ -51,7 +51,7 @@ export default NextAuth({
   },
   callbacks: {
     //This one gets called every time useSession or getSession is called
-    jwt: async ({ token, account, user }) => {
+    jwt: async ({ token, account, user, profile }) => {
       try {
         if (account && user) {
           return {
@@ -60,6 +60,7 @@ export default NextAuth({
               Date.now() + (account.ext_expires_in as number) * 1000,
             refreshToken: account.refresh_token,
             user,
+            roles: profile!.roles,
           };
         }
 
@@ -75,6 +76,7 @@ export default NextAuth({
       }
     },
     session: async ({ token, session }) => {
+      session.roles = token.roles;
       session.user = token.user as any;
       session.accessToken = token.accessToken as string;
       session.error = token.error;

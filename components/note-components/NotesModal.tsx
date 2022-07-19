@@ -48,7 +48,7 @@ const NotesModal: React.FunctionComponent<INotesModalProps> = ({
   });
   const [submitting, setSubmitting] = React.useState(false);
   const toast = useToast();
-  console.log(inputErrors);
+  console.log(openedNote);
   return (
     <>
       <IconButton
@@ -91,20 +91,23 @@ const NotesModal: React.FunctionComponent<INotesModalProps> = ({
                 name="description"
                 placeholder="Here is a sample placeholder"
                 resize="vertical"
-                onChange={(e) =>
-                  setOpenedNote((prev) => {
-                    ({
+                onChange={(e) => {
+                  setOpenedNote((prev) => ({
+                    ...prev,
+                    Description: e.target.value,
+                  }));
+                  if (!e.target.value) {
+                    setInputErrors((prev) => ({
                       ...prev,
-                      Description: e.target.value,
-                    });
-                    if (!!e.target.value) {
-                      setInputErrors((prev) => ({
-                        ...prev,
-                        description: "Description cannot be blank.",
-                      }));
-                    }
-                  })
-                }
+                      description: "Description cannot be blank.",
+                    }));
+                  } else {
+                    setInputErrors((prev) => ({
+                      ...prev,
+                      description: "",
+                    }));
+                  }
+                }}
               />
               {!!inputErrors.description && (
                 <FormErrorMessage>{inputErrors.description}</FormErrorMessage>

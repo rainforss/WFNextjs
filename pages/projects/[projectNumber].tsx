@@ -4,12 +4,8 @@ import { Layout } from "../../components/Layout";
 import { getSession, signIn, useSession } from "next-auth/react";
 import { useProfile } from "../../hooks/useProfile";
 import { useGroups } from "../../hooks/useGroups";
-import ProjectListItem from "../../components/ProjectListItem";
-import { useProjects } from "../../hooks/useProjects";
 import { useEffect } from "react";
 import { ParsedUrlQuery } from "querystring";
-import { Project } from "@prisma/client";
-import ProjectCard from "../../components/ProjectCard";
 import ProjectSection from "../../components/ProjectSection";
 import { useProject } from "../../hooks/useProject";
 
@@ -59,7 +55,7 @@ const ProjectPage: NextPage<IProjectProps> = ({ projectNumber }) => {
             </Center>
           ) : null}
           {status === "authenticated" && !isLoading ? (
-            <ProjectSection project={project} />
+            <ProjectSection project={project} mutateProject={mutateProject} />
           ) : null}
         </Box>
       </Layout>
